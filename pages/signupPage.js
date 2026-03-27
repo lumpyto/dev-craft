@@ -1,8 +1,10 @@
 
-export class SignupPage
-{
-    constructor(page)
-    {
+import { BasePage } from '../pages/basePage';
+
+export class SignupPage extends BasePage {
+    constructor(page) {
+        super(page);
+
         this.page = page
         this.header = page.getByText('REGISTRATION')
         this.email = page.locator("//input[@aria-label='E-mail address']")
@@ -25,7 +27,11 @@ export class SignupPage
         this.verificationForEmail = page.locator("//div[@class='roboto text-h5 q-pt-lg q-pb-md text-center']")
 
         this.userBanner = page.locator("//div[text()='User with this email already exist']")
-        this.userPopup = page.locator("//div['.q-banner__content col text-body2' and text()='User with this email already exist']")
+        this.existinguserBanner = page.locator("//div['.q-banner__content col text-body2' and text()='User with this email already exist']")
+        this.invalidcredentialsBanner = page.getByRole('alert', { name: /Invalid credentials/i })
 
+    }
+    async open() {
+        await this.navigate('/signup');
     }
 }
