@@ -1,5 +1,5 @@
-
 import { BasePage } from './basePage';
+import { expect } from '@playwright/test';
 
 export class LoginPage extends BasePage {
     constructor(page) {
@@ -12,5 +12,27 @@ export class LoginPage extends BasePage {
 
     async open() {
         await this.navigate('/login');
+    }
+
+    async clickJoinHere() {
+        await this.joinHereButton.click({ force: true });
+    }
+
+    async clickJoin() {
+        await this.joinButton.click();
+    }
+
+    async goToSignupViaJoin() {
+        await this.verifyURL('login');
+        await expect(this.header).toHaveText("Member Login");
+        await this.clickJoin();
+        await expect(this.page).toHaveURL(/signup/);
+    }
+
+    async goToSignupViaJoinHere() {
+        await this.verifyURL('login');
+        await expect(this.header).toHaveText("Member Login");
+        await this.clickJoinHere();
+        await expect(this.page).toHaveURL(/signup/);
     }
 }
