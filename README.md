@@ -1,88 +1,128 @@
+# dev-craft Registration Automation Framework
 
-CODE Automation Testing Framework
-A Playwright + JavaScript based end-to-end (E2E) testing framework designed for the CODE platform (staging environment). 
-This project implements the Page Object Model (POM) pattern and utilizes Custom Fixtures for a scalable and maintainable testing architecture.
+Automated tests for the **first step** of the registration flow (Step 1) on the dev-craft platform.
 
-Follow these steps to set up the environment and run the tests on your local machine.
+This project was developed as part of a technical assessment to demonstrate automation skills and best practices using Playwright.
 
-1. Prerequisites
-Ensure you have the following installed:
+## Tech Stack
 
-Node.js (v18 or higher)
+- **Playwright** – End-to-end testing framework
+- **JavaScript**
+- **Page Object Model (POM)** – for better maintainability and readability
+- **Custom Test Fixtures** – using Faker.js for dynamic test data
+- **GitHub Actions** – Continuous Integration pipeline
 
-VS Code (recommended) + Playwright Test extension
+## Scope
 
-2. Installation
-Clone the repository and install the necessary dependencies:
-# Install NPM packages
-npm install
+All tests are strictly limited to **Registration Step 1** as defined in the assignment:
+- Navigation from the Login page (via "Join" and "Join here")
+- Email and Password form filling
+- Terms & Conditions acceptance
+- Verification code popup appearance
 
-# Install Playwright browsers
-npx playwright install
+**Out of scope:** Step 2 (Personal Info), Step 3 (Payment Details), and Step 4 (Proof of Employment).
 
-3. Environment Setup
-Create a .env file in the root directory to manage your environment variables (Base URL, credentials, etc.):
+## Project Structure
 
-BASE_URL=https://staging.code.bg
-USER_EMAIL=your_email@example.com
-USER_PASSWORD=your_password
-
-Project Structure
-The framework is organized into logical layers to separate concerns:
-dev-craft/
+```bash
+dev-craft-registration-automation/
+├── .github/
+│   └── workflows/
+│       └── playwright.yml          # GitHub Actions CI/CD
 ├── fixtures/
-│   └── userFixture.js       # Custom fixtures and Faker.js data generation
+│   └── userFixture.js              # Custom fixture with Faker
 ├── pages/
-│   ├── BasePage.js          # Global methods and shared navigation logic
-│   ├── LoginPage.js         # Locators and actions for the Login page
-│   └── SignupPage.js        # Locators and actions for the Registration flow
+│   ├── basePage.js
+│   ├── loginPage.js
+│   └── signupPage.js               # Page Object for registration form
+├── testdata/
+│   └── testdata.json
 ├── tests/
-│   └── registration.spec.js # Test scenarios and assertions
-├── playwright.config.js     # Global Playwright configuration
-└── package.json             # Project dependencies and scripts
+│   └── registration.spec.js        # Main test scenarios
+├── playwright.config.js
+├── package.json
+├── .gitignore
+└── README.md
+```
 
-🛠 Tech Stack
-Playwright – Core automation framework and test runner.
+## Automated Test Cases
 
-JavaScript (ES6+) – Programming language.
+```Happy Path```
 
-Faker.js – Used within fixtures to generate dynamic test data (emails, names).
+- Successful registration using Join button from Login page
+- Successful registration using Join here link from Login page
+- Verification code popup appears with correct email address displayed
 
-Page Object Model (POM) – Design pattern used to enhance test maintenance and reduce code duplication.
+```Negative & Validation Scenarios```
 
-Running Tests
-You can trigger tests using the following commands in your terminal:
+- Registration attempt with already existing email
+- Required field error messages for Email and Password
+- Terms & Conditions checkbox validation
 
-Execution Commands
-# Run all tests in headless mode
+
+## Getting Started
+    Prerequisites
+
+- Node.js 18+
+- Google Chrome (or any supported browser)
+
+
+## Installation
+
+```bash
+git clone <your-repository-url>
+cd dev-craft-registration-automation
+npm install
+```
+
+## Running Tests
+
+```bash
+# Run all tests
 npx playwright test
 
-# Run a specific test file
-npx playwright test tests/registration.spec.js
+# Run only registration tests
+npx playwright test registration.spec.js
 
-# Run tests in Headed mode (UI visible)
+# Run tests in headed mode (visible browser)
 npx playwright test --headed
 
-# Run a specific test by title
-npx playwright test -g "Verify Registration with Join button"
+# Run with specific browser
+npx playwright test --project=chromium
+```
 
+## View HTML Report
+- After test execution, open the interactive report:
 
-Debugging & Interactive Mode
-# Open Playwright UI Mode (Interactive)
-npx playwright test --ui
-
-# Run tests in Debug mode
-npx playwright test --debug
-
-
-📊 Reporting
-After the test execution finishes, a detailed HTML report is automatically generated.
-# View the latest HTML test report
+```bash
 npx playwright show-report
+```
 
-Best Practices
-Fixtures: Always use userFixture.js for data injection to keep tests clean.
+## Key Practices Applied
 
-Locators: Store all selectors in the pages/ directory; never hardcode selectors inside .spec.js files.
+- Clean Page Object Model implementation with BasePage inheritance
+- Reusable custom fixture for generating unique user data using Faker.js
+- Separation of test data and test logic (testdata.json)
+- Proper use of test.describe.configure({ mode: 'serial' }) for dependent tests
+- Clear and maintainable locator strategies
+- Configured CI pipeline with GitHub Actions
 
-Naming: Use descriptive names for test cases to ensure clear reporting.
+
+## Roadmap / TODO
+
+- Expand automation coverage based on testCases.md
+- Add environment configuration support via .env files
+- Integrate Allure reporting
+- Enable parallel test execution
+- Add accessibility and visual regression testing
+
+
+## Author
+
+- Lyubomir Angelov Petrov
+- Automation Test Engineer
+- Last updated: April 02, 2026
+- Status: In Development
+- Scope: Registration Step 1 only
+
+
